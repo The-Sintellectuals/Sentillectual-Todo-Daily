@@ -1,3 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+	<dimen name="task_detail_property">18sp</dimen>
+	<dimen name="task_detail">15sp</dimen>
 </resources>

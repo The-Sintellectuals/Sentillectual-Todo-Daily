@@ -39,6 +39,7 @@ namespace android_test_app
         private FloatingActionButton Fab_addbtn;
         private Button TaskCreate_btn, TagCreate_btn;
 
+        public static MainActivity mainInstance;
 
 
         // ------------ Overrides ------------
@@ -76,6 +77,7 @@ namespace android_test_app
                 taskCreate.Show(trans, "Task Creation Dialog");
             };
 
+            mainInstance = this;
         }
 
         protected override void OnDestroy()
@@ -140,7 +142,11 @@ namespace android_test_app
             _navigationView.SelectedItemId = item.ItemId;
         }
 
-        
-
+        public void showTaskDetail_Dialog(Task task)
+        {
+            FragmentTransaction fragmentTransaction = SupportFragmentManager.BeginTransaction();
+            TaskDetail_Fragment taskDetail = new TaskDetail_Fragment(task);
+            taskDetail.Show(fragmentTransaction, "Task Detail Dialog");
+        }
     }
 }

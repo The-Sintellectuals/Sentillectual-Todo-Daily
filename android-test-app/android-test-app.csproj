@@ -70,6 +70,7 @@
     <Compile Include="fragments\dash_fragment.cs" />
     <Compile Include="fragments\settings_fragment.cs" />
     <Compile Include="fragments\TaskCreation_Dialog.cs" />
+    <Compile Include="fragments\TaskDetail_Fragment.cs" />
     <Compile Include="fragments\todos_fragment.cs" />
     <Compile Include="ItemDecoration\FilterDecoration.cs" />
     <Compile Include="ItemDecoration\TaskDecoration.cs" />
@@ -256,6 +257,14 @@
     <AndroidResource Include="Resources\drawable\icc_plus.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\TaskDetail_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_arrowBack.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

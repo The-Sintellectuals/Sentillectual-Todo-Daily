@@ -30,8 +30,6 @@ namespace android_test_app.fragments
         private RecyclerView.Adapter mAdapter, mAdapterFilter;
         private RecyclerView.LayoutManager layoutManager, layoutManagerFilter;
 
-        private FloatingActionButton fab_addTask;
-
         
 
         // ------------ Overrides ------------

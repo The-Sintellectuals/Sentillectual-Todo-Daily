@@ -27,7 +27,6 @@ namespace android_test_app.Adapters
         public View mActivity;
         private Todo_ActionMode mActionMode;
         private ActionMode actionMode;
-        public event EventHandler<int> ItemClick;
 
 
 
@@ -127,7 +126,8 @@ namespace android_test_app.Adapters
             }
             else
             {
-                Toast.MakeText(this.context, "action mode is invisible", ToastLength.Long).Show();
+                // Toast.MakeText(this.context, "action mode is invisible", ToastLength.Long).Show();
+                MainActivity.mainInstance.showTaskDetail_Dialog(taskList[position]);
             }
                 
         }
