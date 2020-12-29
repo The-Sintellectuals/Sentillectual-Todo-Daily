@@ -26,7 +26,7 @@ namespace android_test_app.fragments
 
 
         ImageButton exitBtn;
-
+        // Date vars
         TextView DueDate;
         DateTime selectedDate;
 
@@ -35,7 +35,7 @@ namespace android_test_app.fragments
         // ----------- Constructor -----------
         public TaskDetail_Fragment(Task task, Context context)
         {
-            // todo_context = context;
+            todo_context = context;
             this.task = task;
         }
 
@@ -88,28 +88,23 @@ namespace android_test_app.fragments
         }
 
 
-        //public override void OnDismiss(IDialogInterface dialog)
-        //{
-        //    base.OnDismiss(dialog);
-        //    Toast.MakeText(todo_context, "detail view is destroyed", ToastLength.Long).Show();
-        //}
-
-
 
         // ----------- Other functions -----------
         private void ExitBtn_Click(object sender, EventArgs e)
         {
+            // this function is called when the return btn is pressed
             this.Dismiss();
         }
 
         private void DueDate_Click(object sender, EventArgs e)
         {
+            // this function is called when the date text is pressed
             new DatePicker_Fragment(delegate (DateTime time)
             {
+                // !!!!------ Connect the database here ------!!!!
                 selectedDate = time;
                 DueDate.Text = time.ToLongDateString();
             }).Show(FragmentManager, "Date Picker Dialog");
         }
-
     }
 }

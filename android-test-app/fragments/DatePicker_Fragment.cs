@@ -14,23 +14,32 @@ namespace android_test_app.fragments
 {
     class DatePicker_Fragment : DialogFragment, DatePickerDialog.IOnDateSetListener
     {
+        // ---------- Initialization ----------
         Action<DateTime> mDateSelectedHandler = delegate { };
 
+
+
+        // ---------- Constructor ----------
         public DatePicker_Fragment(Action<DateTime> onDateSelected)
         {
             mDateSelectedHandler = onDateSelected;
         }
 
+
+
+        // ---------- Overrides ----------
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
         {
             DateTime now = DateTime.Now;
-            return new DatePickerDialog(Activity, this, now.Year, now.Month, now.Day);
+            return new DatePickerDialog(Activity, this, now.Year, now.Month-1, now.Day);
         }
 
         public void OnDateSet(DatePicker view, int year, int month, int day)
         {
-            DateTime selectedDate = new DateTime(year, month+1, day);
-            mDateSelectedHandler(selectedDate);
+            // This function is called when the user selects a date
+
+            DateTime selectedDate = new DateTime(year, month+1, day); 
+            mDateSelectedHandler(selectedDate);                     // the date data is then passed to the event handler reference
         }
     }
 }

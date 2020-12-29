@@ -132,5 +132,10 @@ namespace android_test_app.Adapters
                 
         }
 
+        public void setTaskList(List<Task> newTaskList)
+        {
+            taskList = newTaskList;
+        }
+
     }
 }

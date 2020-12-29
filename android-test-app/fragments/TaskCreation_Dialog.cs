@@ -12,6 +12,7 @@ using System.Text;
 using Android.Support.V7.Widget;
 using android_test_app.Adapters;
 using Filter = android_test_app.otherCs.Filter;
+using android_test_app.otherCs;
 
 namespace android_test_app.fragments
 {
@@ -24,8 +25,10 @@ namespace android_test_app.fragments
         private RecyclerView.Adapter mAdapter;
         private RecyclerView.LayoutManager layoutManager;
 
-        Button TaskCreate_btn, TagCreate_btn;
+        TextView DateText_input;
 
+        Button TaskCreate_btn, TagCreate_btn;
+        Action<Task> createdTaskObj;
 
 
         // ---------- Overrides ---------------
@@ -66,8 +69,17 @@ namespace android_test_app.fragments
             TaskCreate_btn = view.FindViewById<Button>(Resource.Id.TaskCreate_btn);
             TagCreate_btn = view.FindViewById<Button>(Resource.Id.TagCreate_btn);
 
+            TaskCreate_btn.Click -= TaskCreate_btn_Click;
             TaskCreate_btn.Click += TaskCreate_btn_Click;
+
+            TagCreate_btn.Click -= TagCreate_btn_Click;
             TagCreate_btn.Click += TagCreate_btn_Click;
+
+            // Date Placeholder
+            DateText_input = view.FindViewById<TextView>(Resource.Id.dateText_input);
+            DateText_input.Text = DateTime.Now.ToLongDateString();
+
+            DateText_input.Click += DateText_input_Click;
 
             return view;
         }
@@ -103,6 +115,7 @@ namespace android_test_app.fragments
             Button btn = (Button)sender;
             View view = btn.RootView;
             EditText TaskName_Input = view.FindViewById<EditText>(Resource.Id.TaskName_Input);
+            
 
             Toast.MakeText(this.Context, "Create Task Btn clicked", ToastLength.Long).Show();
 
@@ -111,6 +124,15 @@ namespace android_test_app.fragments
 
             // !!!!!--------- Send to database ---------!!!!!
         }
+
+        private void DateText_input_Click(object sender, EventArgs e)
+        {
+            new DatePicker_Fragment(delegate (DateTime time) 
+            {
+                DateText_input.Text = time.ToLongDateString();
+            }).Show(FragmentManager, "Task Creation Date Picker");
+        }
+
 
     }
 }

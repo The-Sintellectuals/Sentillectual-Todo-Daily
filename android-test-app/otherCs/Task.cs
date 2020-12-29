@@ -17,7 +17,7 @@ namespace android_test_app.otherCs
         public int id { get; set; }
         public string TaskName { get; set; }
 
-        public int date { get; set; }
+        public DateTime date { get; set; }
 
         public bool isSelected = false;
 
@@ -26,7 +26,7 @@ namespace android_test_app.otherCs
 
 
         // ------------- Constructor -------------
-        public Task (int id, string taskName, int date)
+        public Task (int id, string taskName, DateTime date)
         {
             this.id = id;
             this.TaskName = taskName;
@@ -59,9 +59,9 @@ namespace android_test_app.otherCs
             // temp code
             List<Task> tempSub = new List<Task> 
             { 
-                new Task(20, "Teach my classmate", 2000),
-                new Task(21, "Read the quipper guide", 2020),
-                new Task(22, "Answer the quiz", 2021),
+                new Task(20, "Teach my classmate", new DateTime(2002, 8, 10)),
+                new Task(21, "Read the quipper guide", new DateTime(2002, 8, 10)),
+                new Task(22, "Answer the quiz", new DateTime(2002, 8, 10)),
             };
 
             return tempSub;

@@ -46,11 +46,13 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <EditText
-            android:inputType="date"
+        <TextView
+            android:id="@+id/dateText_input"
+            android:text="Date placeholder"
+            android:paddingLeft="50dp"
+            android:textSize="21sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/Date_Input" />
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <LinearLayout

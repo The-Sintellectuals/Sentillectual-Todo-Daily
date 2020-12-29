@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Filter = android_test_app.otherCs.Filter;
+using Task = android_test_app.otherCs.Task;
 
 namespace android_test_app.Adapters
 {
@@ -21,13 +22,16 @@ namespace android_test_app.Adapters
         Context context;
         myFilterViewHolder currSelectedView;
 
+        Action<Filter> taskEventHandler = delegate { };
+
 
 
         // -------------- Constructor --------------
-        public RecyclerAdapterFilter(List<Filter> filterList, View view)
+        public RecyclerAdapterFilter(List<Filter> filterList, View view, Action<Filter> tlChanged)
         {
             this.filterList = filterList;
             context = view.Context;
+            taskEventHandler = tlChanged;
         }
 
 
@@ -66,7 +70,6 @@ namespace android_test_app.Adapters
                     // Unselect previous 
                     currSelectedView.FilterContainer.SetCardBackgroundColor(ContextCompat.GetColor(context, Resource.Color.filterBackgroundUnclicked));
                     Filter filterObj = filterList.Find(i => i.FilterId == currSelectedView.holderId);
-                    Console.WriteLine(filterObj.filterName);
                     filterObj.SetSelected(false);
 
                     // Select the clicked filter
@@ -74,6 +77,8 @@ namespace android_test_app.Adapters
                     currSelectedView = vh;
                     filterList[position].SetSelected(true);
 
+                    // update the task list
+                    taskEventHandler(filterList[position]);
                 }
                 
             };
