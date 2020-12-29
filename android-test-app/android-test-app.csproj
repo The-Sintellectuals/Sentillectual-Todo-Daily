@@ -73,6 +73,7 @@
     <Compile Include="Anim\CustomAnimation.cs" />
     <Compile Include="fragments\calendar_fragment.cs" />
     <Compile Include="fragments\dash_fragment.cs" />
+    <Compile Include="fragments\DatePicker_Fragment.cs" />
     <Compile Include="fragments\settings_fragment.cs" />
     <Compile Include="fragments\TaskCreation_Dialog.cs" />
     <Compile Include="fragments\TaskDetail_Fragment.cs" />

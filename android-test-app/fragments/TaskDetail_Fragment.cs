@@ -17,17 +17,31 @@ namespace android_test_app.fragments
 {
     public class TaskDetail_Fragment : DialogFragment
     {
+        // ----------- Initialization -----------
         Task task;
+        Context todo_context;
         RecyclerView recyclerView;
         RecyclerSubTaskAdapter subAdapter;
         RecyclerView.LayoutManager layoutManager;
+
+
         ImageButton exitBtn;
 
-        public TaskDetail_Fragment(Task task)
+        TextView DueDate;
+        DateTime selectedDate;
+
+
+
+        // ----------- Constructor -----------
+        public TaskDetail_Fragment(Task task, Context context)
         {
+            // todo_context = context;
             this.task = task;
         }
 
+
+
+        // ----------- Overrides -----------
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -45,7 +59,9 @@ namespace android_test_app.fragments
 
             // view.FindViewById<TextView>(Resource.Id.description).Text = 
 
-            // view.FindViewById<TextView>(Resource.Id.dueDate).Text = 
+            // ------- date picker dialog -------
+            DueDate = view.FindViewById<TextView>(Resource.Id.dueDate);
+            DueDate.Click += DueDate_Click;
 
 
             // ------- Recycler Sub Task View -------
@@ -61,17 +77,39 @@ namespace android_test_app.fragments
             recyclerView.SetAdapter(subAdapter);
 
 
-            // ------- Recycler Sub Task View -------
+            // ------- exit btn -------
             exitBtn = view.FindViewById<ImageButton>(Resource.Id.exitTaskDetail);
             exitBtn.Click += ExitBtn_Click;
+
+            
 
 
             return view;
         }
 
+
+        //public override void OnDismiss(IDialogInterface dialog)
+        //{
+        //    base.OnDismiss(dialog);
+        //    Toast.MakeText(todo_context, "detail view is destroyed", ToastLength.Long).Show();
+        //}
+
+
+
+        // ----------- Other functions -----------
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             this.Dismiss();
         }
+
+        private void DueDate_Click(object sender, EventArgs e)
+        {
+            new DatePicker_Fragment(delegate (DateTime time)
+            {
+                selectedDate = time;
+                DueDate.Text = time.ToLongDateString();
+            }).Show(FragmentManager, "Date Picker Dialog");
+        }
+
     }
 }

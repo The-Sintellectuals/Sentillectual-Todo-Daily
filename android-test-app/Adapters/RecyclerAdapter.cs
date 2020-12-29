@@ -126,8 +126,8 @@ namespace android_test_app.Adapters
             }
             else
             {
-                Toast.MakeText(this.context, "action mode is invisible", ToastLength.Long).Show();
-                // MainActivity.mainInstance.showTaskDetail_Dialog(taskList[position]);
+                // Toast.MakeText(this.context, "action mode is invisible", ToastLength.Long).Show();
+                MainActivity.mainInstance.showTaskDetail_Dialog(taskList[position], this.context);
             }
                 
         }

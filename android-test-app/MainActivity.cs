@@ -17,6 +17,7 @@ using android_test_app.otherCs;
 
 using FragmentTransaction = Android.Support.V4.App.FragmentTransaction;
 using FragmentManage = Android.Support.V4.App.FragmentManager;
+using Android.Content;
 
 namespace android_test_app
 {
@@ -142,10 +143,10 @@ namespace android_test_app
             _navigationView.SelectedItemId = item.ItemId;
         }
 
-        public void showTaskDetail_Dialog(Task task)
+        public void showTaskDetail_Dialog(Task task, Context context)
         {
             FragmentTransaction fragmentTransaction = SupportFragmentManager.BeginTransaction();
-            TaskDetail_Fragment taskDetail = new TaskDetail_Fragment(task);
+            TaskDetail_Fragment taskDetail = new TaskDetail_Fragment(task, context);
             taskDetail.Show(fragmentTransaction, "Task Detail Dialog");
         }
     }
