@@ -21,6 +21,8 @@ namespace android_test_app.otherCs
 
         public bool isSelected = false;
 
+        public bool completed { get; set; }
+
 
 
         // ------------- Constructor -------------
@@ -50,6 +52,19 @@ namespace android_test_app.otherCs
                 }
             }
             return selectedList;
+        }
+
+        public List<Task> childTask()
+        {
+            // temp code
+            List<Task> tempSub = new List<Task> 
+            { 
+                new Task(20, "Teach my classmate", 2000),
+                new Task(21, "Read the quipper guide", 2020),
+                new Task(22, "Answer the quiz", 2021),
+            };
+
+            return tempSub;
         }
     }
 }

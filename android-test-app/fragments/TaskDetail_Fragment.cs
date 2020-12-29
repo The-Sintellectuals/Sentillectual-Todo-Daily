@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using android_test_app.otherCs;
 using Android.Support.V7.Widget;
+using android_test_app.Adapters;
 
 namespace android_test_app.fragments
 {
@@ -18,6 +19,9 @@ namespace android_test_app.fragments
     {
         Task task;
         RecyclerView recyclerView;
+        RecyclerSubTaskAdapter subAdapter;
+        RecyclerView.LayoutManager layoutManager;
+        ImageButton exitBtn;
 
         public TaskDetail_Fragment(Task task)
         {
@@ -43,10 +47,31 @@ namespace android_test_app.fragments
 
             // view.FindViewById<TextView>(Resource.Id.dueDate).Text = 
 
+
+            // ------- Recycler Sub Task View -------
             recyclerView = view.FindViewById<RecyclerView>(Resource.Id.subTask_viewpager);
             recyclerView.NestedScrollingEnabled = false;
 
+            layoutManager = new LinearLayoutManager(view.Context);
+
+            recyclerView.SetLayoutManager(layoutManager);
+
+            subAdapter = new RecyclerSubTaskAdapter(task.childTask());
+
+            recyclerView.SetAdapter(subAdapter);
+
+
+            // ------- Recycler Sub Task View -------
+            exitBtn = view.FindViewById<ImageButton>(Resource.Id.exitTaskDetail);
+            exitBtn.Click += ExitBtn_Click;
+
+
             return view;
+        }
+
+        private void ExitBtn_Click(object sender, EventArgs e)
+        {
+            this.Dismiss();
         }
     }
 }
