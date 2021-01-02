@@ -20,24 +20,26 @@ namespace android_test_app.Adapters
     internal class RecyclerAdapter : RecyclerView.Adapter
     {
         // -------------- Initialization --------------
-        List<Task> taskList;
+        public List<Task> taskList { get; set; }
         RecyclerView recyclerView;
         Context context;
-        todos_fragment parent_fragment;
-        public View mActivity;
+        public View todos_view;
         private Todo_ActionMode mActionMode;
         private ActionMode actionMode;
+
+        // Events
+        public event EventHandler<Task> TaskClicked;
+        public event EventHandler<bool> freezeLayout;
 
 
 
         // -------------- Constructor --------------
-        public RecyclerAdapter(List<Task> taskList, RecyclerView recyclerView, View view, todos_fragment fragment)
+        public RecyclerAdapter(List<Task> taskList, RecyclerView recyclerView, View view)
         {
-            this.taskList = taskList;
-            this.recyclerView = recyclerView;
-            context = view.Context;
-            mActivity = view;
-            parent_fragment = fragment;
+            this.taskList = taskList;           // Used for displaying the task related details
+            this.recyclerView = recyclerView;   // Used to get the reference of the item in a Recycler View
+            context = view.Context;             // Mostly used in Toasts
+            todos_view = view;                  // Used to add the Action Mode to the View
         }
 
 
@@ -98,44 +100,48 @@ namespace android_test_app.Adapters
         {
             if (actionMode == null)
             {
-                mActionMode = new Todo_ActionMode(mActivity.Context, this);
-                actionMode = mActivity.StartActionMode(mActionMode);
-                parent_fragment.freeze_layout(true);
+                mActionMode = new Todo_ActionMode();
+                actionMode = todos_view.StartActionMode(mActionMode);
+                mActionMode.CloseActionBar -= MActionMode_CloseActionBar;
+                mActionMode.CloseActionBar += MActionMode_CloseActionBar;
+                freezeLayout?.Invoke(this, true);
             }
         }
 
-        public void FinishActionMode()
+        private void MActionMode_CloseActionBar(object sender, bool e)
         {
             if (actionMode != null)
             {
                 actionMode.Finish();
                 actionMode = null;
-                parent_fragment.freeze_layout(false);
+                freezeLayout?.Invoke(this, false);
+
+                // Deselect selected tasks
+                for (int i = 0; i < taskList.Count; i++)
+                {
+                    if (taskList[i].isSelected) taskList[i].isSelected = false;
+                }
+                NotifyDataSetChanged();
             }
         }
 
         void onClick(Object sender, EventArgs e)
         {
-            View mview = (View)sender;
-            int position = recyclerView.GetChildAdapterPosition(mview);
+            int position = recyclerView.GetChildAdapterPosition((View)sender);
             if (actionMode != null)
             {
-                Toast.MakeText(this.context, "action mode is visible", ToastLength.Long).Show();
+                // Multi select option
+                // Toast.MakeText(this.context, "action mode is visible", ToastLength.Long).Show();
                 taskList[position].isSelected = !taskList[position].isSelected;
                 NotifyDataSetChanged();
             }
             else
             {
+                // Open detail Option
                 // Toast.MakeText(this.context, "action mode is invisible", ToastLength.Long).Show();
-                MainActivity.mainInstance.showTaskDetail_Dialog(taskList[position], this.context);
+                TaskClicked?.Invoke(this, taskList[position]);
             }
-                
-        }
 
-        public void setTaskList(List<Task> newTaskList)
-        {
-            taskList = newTaskList;
         }
-
     }
 }

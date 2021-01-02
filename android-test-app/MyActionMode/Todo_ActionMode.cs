@@ -15,17 +15,7 @@ namespace android_test_app.MyActionMode
     class Todo_ActionMode : Java.Lang.Object, ActionMode.ICallback
     {
         // ------------ Initialization ------------
-        private Context context;
-        private RecyclerAdapter mAdapter;
-
-
-
-        // ------------ Constructor ------------
-        public Todo_ActionMode(Context context, RecyclerAdapter adapter)
-        {
-            this.context = context;
-            mAdapter = adapter;
-        }
+        public event EventHandler<bool> CloseActionBar;
 
 
 
@@ -35,9 +25,10 @@ namespace android_test_app.MyActionMode
             switch (item.ItemId)
             {
                 case Resource.Id.task_completed:
-                    mAdapter.FinishActionMode();
+                    CloseActionBar?.Invoke(this, true);
                     return true;
                 case Resource.Id.task_delete:
+                    CloseActionBar?.Invoke(this, true);
                     return true;
 
                 default:
@@ -53,7 +44,7 @@ namespace android_test_app.MyActionMode
 
         public void OnDestroyActionMode(ActionMode mode)
         {
-            mAdapter.FinishActionMode();
+            CloseActionBar?.Invoke(this, true);
             mode.Dispose();
         }
 

@@ -36,6 +36,7 @@ namespace android_test_app
         settings_fragment settingFrag = new settings_fragment();
         Stack<int> NavHeights = new Stack<int>();
 
+
         // Buttons and Events
         private FloatingActionButton Fab_addbtn;
         private Button TaskCreate_btn, TagCreate_btn;
@@ -59,6 +60,7 @@ namespace android_test_app
             ViewPagerAdapter adapter = new ViewPagerAdapter(SupportFragmentManager);
             adapter.AddFragment(dashFrag, "Dashboard");
             adapter.AddFragment(todoFrag, "Todos");
+            todoFrag.OpenTaskDetail = showTaskDetail_Dialog;
             adapter.AddFragment(calendarFrag, "Calendar");
             adapter.AddFragment(settingFrag, "Settings");
             _viewPager.Adapter = adapter;
@@ -98,16 +100,18 @@ namespace android_test_app
 
 
         // ------------ Other Functions ------------
+        // Event Handlers
         public void actionModeActivated(bool locked)
         {
             _viewPager = this.FindViewById<LockableViewPager>(Resource.Id.viewpager);
-            _viewPager.SwipeLocked = locked;
+            _viewPager.SwipeLocked = locked;        // Lock swipe
 
             _navigationView = this.FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
             NavHeights.Push(_navigationView.Height);
             
             if (locked)
             {
+                // slide down
                 CustomAnimation anim = new CustomAnimation(_navigationView, 0);
                 anim.Duration = 250;
                 _navigationView.StartAnimation(anim);
@@ -115,6 +119,7 @@ namespace android_test_app
             }
             else
             {
+                // slide up
                 NavHeights.Pop();
                 CustomAnimation anim = new CustomAnimation(_navigationView, NavHeights.Peek());
                 anim.Duration = 250;
@@ -124,11 +129,20 @@ namespace android_test_app
             
         }
 
+        public void showTaskDetail_Dialog(Task task, Context context)
+        {
+            FragmentTransaction fragmentTransaction = SupportFragmentManager.BeginTransaction();
+            TaskDetail_Fragment taskDetail = new TaskDetail_Fragment(task, context);
+            taskDetail.Show(fragmentTransaction, "Task Detail Dialog");
+        }
+
+        //Animations
         private void Anim_AnimationStart_Down(object sender, Android.Views.Animations.Animation.AnimationStartEventArgs e)
         {
             
         }
 
+        // Bottom Navigation
         private void NavigationView_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
         {
             // Binds changes in the Bottom Navigation to the view pager
@@ -143,11 +157,5 @@ namespace android_test_app
             _navigationView.SelectedItemId = item.ItemId;
         }
 
-        public void showTaskDetail_Dialog(Task task, Context context)
-        {
-            FragmentTransaction fragmentTransaction = SupportFragmentManager.BeginTransaction();
-            TaskDetail_Fragment taskDetail = new TaskDetail_Fragment(task, context);
-            taskDetail.Show(fragmentTransaction, "Task Detail Dialog");
-        }
     }
 }

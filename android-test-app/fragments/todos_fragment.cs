@@ -30,8 +30,9 @@ namespace android_test_app.fragments
         private RecyclerView.Adapter mAdapterFilter;
         private RecyclerView.LayoutManager layoutManager, layoutManagerFilter;
 
-
-
+        // Delegates
+        public Action<Task, Context> OpenTaskDetail { get; set; } = delegate { };
+        public Action<bool> activateActionMode { get; set; } = delegate { };
 
 
         // ------------ Overrides ------------
@@ -71,7 +72,9 @@ namespace android_test_app.fragments
             recyclerViewFilter.AddItemDecoration(filterDecoration);
 
             // Recycler Adapter Assignment
-            mAdapter = new RecyclerAdapter(taskList, recyclerView, view, this);
+            mAdapter = new RecyclerAdapter(taskList, recyclerView, view);
+            mAdapter.TaskClicked += MAdapter_TaskClicked;
+            mAdapter.freezeLayout += MAdapter_freezeLayout;
             mAdapterFilter = new RecyclerAdapterFilter(filterList, view, delegate (Filter chosenTask) {
                 changeTaskList(chosenTask);
             });
@@ -85,10 +88,22 @@ namespace android_test_app.fragments
             return view;
         }
 
+        public override void OnDestroy()
+        {
+            mAdapter.TaskClicked -= MAdapter_TaskClicked;
+            mAdapter.freezeLayout -= MAdapter_freezeLayout;
+        }
+
 
 
         // ------------ Other Functions ------------
-        public void freeze_layout(bool freeze)
+        // Event Handlers
+        private void MAdapter_TaskClicked(object sender, Task task)
+        {
+            OpenTaskDetail(task, recyclerView.Context);
+        }
+
+        private void MAdapter_freezeLayout(object sender, bool freeze)
         {
             MainActivity main_act = (MainActivity)this.Activity;
             if (freeze)
@@ -101,13 +116,6 @@ namespace android_test_app.fragments
                 // Unhide bottom navbar
                 main_act.actionModeActivated(false);        // Unlock Fragment
             }
-        }
-
-        public void onTaskCreation_Click()
-        {
-            FragmentTransaction trans = FragmentManager.BeginTransaction();
-            var fragment = new TaskCreation_Dialog();
-            fragment.Show(trans, "Dialog Fragment");
         }
 
         private void changeTaskList(Filter chosenFilter)
@@ -124,7 +132,7 @@ namespace android_test_app.fragments
                     new Task(0, "Wash the car", new DateTime(2002, 8, 10)),
                     new Task(0, "Kill the racoons", new DateTime(2002, 8, 10)),
                 };
-                mAdapter.setTaskList(newTaskList);
+                mAdapter.taskList = newTaskList;
                 mAdapter.NotifyDataSetChanged();
             }
         }

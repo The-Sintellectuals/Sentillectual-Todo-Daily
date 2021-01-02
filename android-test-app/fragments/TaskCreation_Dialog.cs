@@ -28,7 +28,6 @@ namespace android_test_app.fragments
         TextView DateText_input;
 
         Button TaskCreate_btn, TagCreate_btn;
-        Action<Task> createdTaskObj;
 
 
         // ---------- Overrides ---------------
