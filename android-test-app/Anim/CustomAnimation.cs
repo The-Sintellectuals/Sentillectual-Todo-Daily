@@ -17,7 +17,6 @@ namespace android_test_app.Anim
         // ------------ Initialization ------------
         View mViews;
         private int OriginalHeight;
-        private int TargetHeight;
         private int GrowBy;
 
 
@@ -27,7 +26,6 @@ namespace android_test_app.Anim
         {
             this.mViews = mViews;
             OriginalHeight = mViews.Height;
-            TargetHeight = targetHeight;
             GrowBy = targetHeight - OriginalHeight;
         }
 

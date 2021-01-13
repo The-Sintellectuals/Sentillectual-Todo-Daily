@@ -27,7 +27,7 @@ namespace android_test_app.fragments
         // RecyclerView Initialization
         private RecyclerView recyclerView, recyclerViewFilter;
         private RecyclerAdapter mAdapter;
-        private RecyclerView.Adapter mAdapterFilter;
+        private RecyclerAdapterFilter mAdapterFilter;
         private RecyclerView.LayoutManager layoutManager, layoutManagerFilter;
 
         // Delegates
@@ -75,9 +75,8 @@ namespace android_test_app.fragments
             mAdapter = new RecyclerAdapter(taskList, recyclerView, view);
             mAdapter.TaskClicked += MAdapter_TaskClicked;
             mAdapter.freezeLayout += MAdapter_freezeLayout;
-            mAdapterFilter = new RecyclerAdapterFilter(filterList, view, delegate (Filter chosenTask) {
-                changeTaskList(chosenTask);
-            });
+            mAdapterFilter = new RecyclerAdapterFilter(filterList, view);
+            mAdapterFilter.onFilterClicked += MAdapterFilter_onFilterClicked;
 
             recyclerView.SetAdapter(mAdapter);
             recyclerViewFilter.SetAdapter(mAdapterFilter);
@@ -92,6 +91,7 @@ namespace android_test_app.fragments
         {
             mAdapter.TaskClicked -= MAdapter_TaskClicked;
             mAdapter.freezeLayout -= MAdapter_freezeLayout;
+            mAdapterFilter.onFilterClicked -= MAdapterFilter_onFilterClicked;
         }
 
 
@@ -118,14 +118,13 @@ namespace android_test_app.fragments
             }
         }
 
-        private void changeTaskList(Filter chosenFilter)
+        private void MAdapterFilter_onFilterClicked(object sender, Filter chosenFilter)
         {
             // !!!!!----- connect to database -----!!!!!
 
             // this function connects to the database to retrieve the todolist/task objects under the chosenFilter
             if (chosenFilter.filterName == "Today")
             {
-                Toast.MakeText(this.Context, "Today Filter chosen", Android.Widget.ToastLength.Long).Show();
                 List<Task> newTaskList = new List<Task>
                 {
                     new Task(0, "Wash the dishes", new DateTime(2002, 8, 10)),
@@ -133,6 +132,11 @@ namespace android_test_app.fragments
                     new Task(0, "Kill the racoons", new DateTime(2002, 8, 10)),
                 };
                 mAdapter.taskList = newTaskList;
+                mAdapter.NotifyDataSetChanged();
+            }
+            else
+            {
+                mAdapter.taskList = fillTaskList();
                 mAdapter.NotifyDataSetChanged();
             }
         }

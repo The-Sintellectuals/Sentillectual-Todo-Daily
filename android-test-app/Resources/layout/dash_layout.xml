@@ -78,7 +78,7 @@
                         android:progress="50"/>
 
                     <TextView
-                        android:text="7"
+                        android:text="8"
                         android:textStyle="bold"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentRight="true"

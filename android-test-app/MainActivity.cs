@@ -115,7 +115,9 @@ namespace android_test_app
                 CustomAnimation anim = new CustomAnimation(_navigationView, 0);
                 anim.Duration = 250;
                 _navigationView.StartAnimation(anim);
+                Fab_addbtn.Visibility = ViewStates.Invisible;
                 anim.AnimationStart += Anim_AnimationStart_Down;
+                anim.AnimationEnd -= Anim_AnimationEnd;
             }
             else
             {
@@ -124,7 +126,7 @@ namespace android_test_app
                 CustomAnimation anim = new CustomAnimation(_navigationView, NavHeights.Peek());
                 anim.Duration = 250;
                 _navigationView.StartAnimation(anim);
-                anim.AnimationStart += Anim_AnimationStart_Down;
+                anim.AnimationEnd += Anim_AnimationEnd;
             }
             
         }
@@ -136,10 +138,20 @@ namespace android_test_app
             taskDetail.Show(fragmentTransaction, "Task Detail Dialog");
         }
 
-        //Animations
+        // Animations
         private void Anim_AnimationStart_Down(object sender, Android.Views.Animations.Animation.AnimationStartEventArgs e)
         {
             
+        }
+
+        private void Anim_AnimationEnd(object sender, Android.Views.Animations.Animation.AnimationEndEventArgs e)
+        {
+            Fab_addbtn.Visibility = ViewStates.Visible;
+            CustomAnimation anim = (CustomAnimation)sender;
+
+            // Unsubscribe the event when animation finishes
+            anim.AnimationEnd -= Anim_AnimationEnd;
+            anim.AnimationStart -= Anim_AnimationStart_Down;
         }
 
         // Bottom Navigation

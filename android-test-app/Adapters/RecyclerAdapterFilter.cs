@@ -22,16 +22,15 @@ namespace android_test_app.Adapters
         Context context;
         myFilterViewHolder currSelectedView;
 
-        Action<Filter> taskEventHandler = delegate { };
+        public event EventHandler<Filter> onFilterClicked;
 
 
 
         // -------------- Constructor --------------
-        public RecyclerAdapterFilter(List<Filter> filterList, View view, Action<Filter> tlChanged)
+        public RecyclerAdapterFilter(List<Filter> filterList, View view)
         {
             this.filterList = filterList;
             context = view.Context;
-            taskEventHandler = tlChanged;
         }
 
 
@@ -78,7 +77,7 @@ namespace android_test_app.Adapters
                     filterList[position].SetSelected(true);
 
                     // update the task list
-                    taskEventHandler(filterList[position]);
+                    onFilterClicked?.Invoke(this, filterList[position]);
                 }
                 
             };
